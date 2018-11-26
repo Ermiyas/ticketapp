@@ -1,0 +1,21 @@
+{
+  "name": "ticketor",
+  "version": "1.0.0",
+  "description": "Small app vue-php hybrid for organasing tickets ",
+  "main": "index.js",
+  "scripts": {
+    "test": "console.log(\"test lol\")"
+  },
+  "repository": {
+    "type": "git",
+    "url": "/viktorvesely/ticketapp"
+  },
+  "author": "Domsmazo & Vitkorsmazo",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "vue": "^2.5.17"
+  }
+}
