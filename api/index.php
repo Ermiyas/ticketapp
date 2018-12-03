@@ -1,3 +1,5 @@
 <?php
-  echo "lol"
+  $lol = "tri ";
+  $lol = $lol . "lol";
+  echo $tri;
 ?>
