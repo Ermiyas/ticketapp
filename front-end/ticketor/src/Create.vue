@@ -4,9 +4,12 @@
       <input class="input" type="text" name="title" value="">
       <textarea class="input" name="description" cols="30" rows="10"></textarea>
       <p class="text"> Priority </p>
-      <input class="input" type="radio" name="priority" value="Burning">
-      <input class="input" type="radio" name="priority" value="Let's do this">
-      <input class="input" type="radio" name="priority" value="Chill">
+      <span>Chill ✨</span>
+      <input class="input" type="radio" name="priority" value="0">
+      <span>Let's do this 💪</span>
+      <input class="input" type="radio" name="priority" value="1">
+      <span>Burning 🔥</span>
+      <input class="input" type="radio" name="priority" value="2">
     </div>
   </div>  
 </template>
@@ -33,7 +36,6 @@ export default {
   height: 100%;
   box-sizing: border-box;
   padding: 50px 0;
-  border: 1px solid black;
 }
 .form {
   border: 1px black solid;
@@ -42,8 +44,12 @@ export default {
   padding: 20px;
 }
 .form input {
-  outline: none;
-  display: inline-block;
+  display: block;
+  font-size: 1.5em;
+  margin: 19px 0 19px 0;
+  border: none;
+  font-weight: bold;
+  width: 90%;
 }
 
 </style>

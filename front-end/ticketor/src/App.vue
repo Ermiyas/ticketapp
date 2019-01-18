@@ -23,20 +23,32 @@
     <div id="page-view">
       <router-view></router-view>
     </div>
+    <div class="errorsHolder">
+        <div class="errorMsg" v-for="error in errors" :key="error.id">
+          <span class="cross" @click="removeError(error.id)">x</span>
+          <span>{{ error.msg }}</span>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { EventBus } from "./ext/eventBus.js"
 
 export default {
   name: 'app',
   data() {
     return {
-      menuOpened: false
+      menuOpened: false,
+      errors: []
     }
   },
   created() {
-    this.takeMe("/tasks")
+    EventBus.$on("popError", msg => {
+      this.popErrorMsg(msg);
+    });
+
+    this.takeMe("/login")
   },
   methods: {
     toggleMenu() {
@@ -44,6 +56,24 @@ export default {
     },
     takeMe(to) {
       this.$router.push(to);
+    },
+    guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    },
+    removeError(id) {
+      this.errors.splice(this.errors.find( error=> { return error.id === id }),1);
+    },
+    popErrorMsg(msg) {
+      let cache = {msg: msg, id: this.guid()};
+      this.errors.push(cache);
+      setTimeout(()=> {
+        this.errors.splice(this.errors.find( error=> { return error.id === cache.id }),1);
+      }, 10000)
     }
   },
   computed: {
@@ -146,5 +176,34 @@ body {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.errorsHolder {
+  position: absolute;
+  bottom: 50px;
+  right: 45px;
+  z-index: 99999;
+}
+
+.errorMsg {
+  padding: 25px 40px;
+  margin-top: 10px;
+  background-color: #d33051;
+  border-radius: 12px;
+  border: 1px red solid;
+  text-align: center;
+  position: relative;
+}
+
+.errorMsg .cross {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 20px;
+}
+
+.errorMsg .cross:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

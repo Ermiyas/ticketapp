@@ -20,9 +20,17 @@
             <textarea name="description" v-model='data.value'></textarea>
           </div>
         </div>
+        <div class="comments-hover" @mouseenter='commentSectionExpanded = true' @mouseleave='commentSectionExpanded = false' :class='commentClass'>
+          <transition name="fade">
+            <div class="create" v-if='commentSectionExpanded'>
+              <input type="text" name="comment" v-model='newComment'>
+              <div class="submitComment" @click="addComment">
+                Comment
+              </div>
+            </div>
+          </transition>
+        </div>
         <div class="comments">
-          <div class="create">
-          </div>
           <comment v-for='(comment, index) in data.comments' :data='comment' :key='comment.id'  :index='index'></comment>
         </div>
       </div>
@@ -32,12 +40,15 @@
 <script>
 import TicketStruct from '../structs/ticket.ts'
 import Comment from './Comment'
+import CommentStruct from '../structs/comment.ts'
 
 export default {
   data() {
     return {
       editTitle: false,
-      editDescription: false
+      editDescription: false,
+      newComment: "",
+      commentSectionExpanded: false
     }
   },
   props: ['show', 'data'],
@@ -58,6 +69,9 @@ export default {
           this.$refs[what].focus();
         }
       });
+    },
+    addComment() {
+      this.data.comments.push(new CommentStruct("#xxxx" + this.data.comments.length, this.newComment, "weseli", Date.now()));
     }
   },
   computed: {
@@ -90,6 +104,9 @@ export default {
           break;
       }
       return msg;
+    },
+    commentClass() {
+      return this.commentSectionExpanded ? "expanded" : "contracted";
     }
   },
   components: {
@@ -118,7 +135,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
-  height: 500px;
+  height: 650px;
   background-color: white;
   border-radius: 12px;
   padding: 4px 20px;
@@ -187,6 +204,10 @@ h2 {
   outline: none;
   border: none;
 }
+.comments {
+  height: 120px;
+  overflow-y: auto;
+}
 .border {
   width: 100%;
   height: 100%;
@@ -194,6 +215,49 @@ h2 {
   box-sizing: border-box;
   border: 1px solid black;
   padding: 10px;
+}
+.comments-hover {
+  padding: 5px 10px;
+  height: 20px;
+  transition: height .6s;
+  display: inline-block;
+  width: 100%;
+}
+.comments-hover.expanded {
+  height: 30px;
+}
+.fadeN-enter, fadeN-leave-to {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.fade-enter-active {
+  transition: opacity 1s;
+}
+.fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.create input {
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  float: left;
+  border-bottom: 1px solid black;
+}
+.create .submitComment {
+  float: right;
+  border: 1px solid grey;
+  color: grey;
+  padding: 5px 10px;
+  position: relative;
+  bottom: 8px;
+}
+.create .submitComment:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 </style>
 

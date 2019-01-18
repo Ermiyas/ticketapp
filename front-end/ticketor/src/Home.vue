@@ -16,7 +16,6 @@ import draggable from 'vuedraggable'
 import Divider from './components/Divider'
 import DividerStruct from './structs/divider.ts'
 import TaskView from './components/Task'
-import CommentStruct from './structs/comment.ts'
 
 export default {
   data() {
@@ -33,7 +32,7 @@ export default {
     'task': TaskView
   },
   created() {
-    this.items.push(new TicketStruct('#12321', 'This is a cool task', 'this task require a lot of fun to accomplish', 0, [new CommentStruct("#123131", "This is a first comment", "weseli", Date.now()), new CommentStruct("#1237771", "This is a second comment", "weseli", Date.now()), new CommentStruct("#12399", "Why are you saying that?", "no way", Date.now())]))
+    this.items.push(new TicketStruct('#12321', 'This is a cool task', 'this task require a lot of fun to accomplish', 0, []))
     this.items.push(new TicketStruct('#999', 'Hurry up', 'i have hight priority', 2, []));
     this.items.push(new TicketStruct('#9991', 'Another?', 'i havey', 1, []));
     this.items.push(new TicketStruct('#9992', 'Seriously?', 'What the fuck?', 2, []));
