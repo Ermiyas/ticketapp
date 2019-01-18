@@ -6,7 +6,8 @@
           <form class="form">
             <input type="text" v-model='loginData.username' name="username" placeholder="username">
             <input type="password" v-model='loginData.password' name="pwd" placeholder="password">
-            <div @click='tryLogin()' class="do-btn">login</div>
+            <div @click='tryLogin()' class="do-btn">login</div>      
+            <input type="hidden" name="login" value="true">
           </form>
         </div>
         <div class="register" v-if='!login'>
@@ -24,7 +25,8 @@
               <input type="radio" name="role" value="proletar">
               <span class="checkmark"></span>
             </label>
-            <div @click='tryRegister()' class="do-btn">register</div>
+            <div @click='tryRegister()' class="do-btn">register</div>      
+            <input type="hidden" name="register" value="true">
           </form>
         </div>
         <div class="redirect">
@@ -70,6 +72,8 @@ export default {
       this.postForm($(".register .form"), "/signup.inc.php");
     },
     tryLogin() {
+      EventBus.$emit("login", {username: "weseli", role: "burzo"})
+      return;
       this.postForm($(".login .form"), "/login.inc.php");
     },
   },

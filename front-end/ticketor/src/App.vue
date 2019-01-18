@@ -13,7 +13,7 @@
             <li @click="takeMe('/create')">
               <span>- Create -</span>
             </li>
-            <li @click="takeMe('/logout.php')">
+            <li @click="logout()">
               <span>- Sign out -</span>
             </li>
           </ul>
@@ -21,7 +21,7 @@
       </transition>
     </div>
     <div id="page-view">
-      <router-view></router-view>
+      <router-view :user='user' :logged='loggedIn'></router-view>
     </div>
     <div class="errorsHolder">
         <div class="errorMsg" v-for="error in errors" :key="error.id">
@@ -40,7 +40,9 @@ export default {
   data() {
     return {
       menuOpened: false,
-      errors: []
+      errors: [],
+      loggedIn: false,
+      user: {}
     }
   },
   created() {
@@ -48,13 +50,35 @@ export default {
       this.popErrorMsg(msg);
     });
 
+    EventBus.$on("login", user => {
+      this.loggedIn = true;
+      this.user = user;
+      this.takeMe("/tasks");
+    });
+
+    EventBus.$on("logout", () => {
+      this.loggedIn = false;
+      this.user = {};
+      this.takeMe("/login");
+    })
+
+    EventBus.$on()
+
     this.takeMe("/login")
   },
   methods: {
     toggleMenu() {
       this.menuOpened = !this.menuOpened;
     },
+    logout() {
+      EventBus.$emit("logout");
+    },
     takeMe(to) {
+      if (to !== "/login" && (!this.loggedIn || Object.keys(this.user) === 0)) {
+        EventBus.$emit("popError", "You are not logged in");
+        this.$router.push("/login");
+        return;
+      }
       this.$router.push(to);
     },
     guid() {

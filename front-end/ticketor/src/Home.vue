@@ -16,6 +16,7 @@ import draggable from 'vuedraggable'
 import Divider from './components/Divider'
 import DividerStruct from './structs/divider.ts'
 import TaskView from './components/Task'
+import { EventBus } from "./ext/eventBus.js"
 
 export default {
   data() {
@@ -32,6 +33,14 @@ export default {
     'task': TaskView
   },
   created() {
+    EventBus.$on("createTask", jForm => {
+      let task = {};
+      jForm.serializeArray().forEach(item => {
+        task[item.name] = item.value;
+      });
+      this.items.push(new TicketStruct('#' + Date.now(), task.title, task.value, task.priority, []));
+    })
+
     this.items.push(new TicketStruct('#12321', 'This is a cool task', 'this task require a lot of fun to accomplish', 0, []))
     this.items.push(new TicketStruct('#999', 'Hurry up', 'i have hight priority', 2, []));
     this.items.push(new TicketStruct('#9991', 'Another?', 'i havey', 1, []));

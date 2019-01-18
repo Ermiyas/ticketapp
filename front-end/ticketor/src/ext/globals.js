@@ -14,7 +14,7 @@ export default {
           }
         },
         error : (jqXHR, textStatus, errorThrown) => {
-          reject(textStatus, errorThrown);
+          reject("Error while requesting the api", errorThrown);
         }
       }
       data ? settings.data = data : null;
